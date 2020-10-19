@@ -39,7 +39,7 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     dir: 'api'
     args: ['push', 'gcr.io/${_PROJECT_ID}/cloudcatsapi']
-    wait_for: ['run-test'] # Changed this line
+    wait_for: ['run-tests'] # Changed this line
 
   # Deploy container image to Cloud Run
   - id: cloud-run
