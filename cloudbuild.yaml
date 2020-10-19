@@ -28,16 +28,18 @@ steps:
     wait_for: ['-']
 
   # Use the container image to run tests
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   entrypoint: 'bash'
-  #   args: ['-c', 'docker run gcr.io/${_PROJECT_ID}/cloudcatsapi pytest -v']
+  - id: run-tests # Added this line
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args: ['-c', 'docker run gcr.io/${_PROJECT_ID}/cloudcatsapi pytest -v']
+    wait_for: ['docker-build'] # Added this line
 
   # Push the container image to Container Registry
   - id: gcr-push
     name: 'gcr.io/cloud-builders/docker'
     dir: 'api'
     args: ['push', 'gcr.io/${_PROJECT_ID}/cloudcatsapi']
-    wait_for: ['docker-build']
+    wait_for: ['run-test'] # Changed this line
 
   # Deploy container image to Cloud Run
   - id: cloud-run
